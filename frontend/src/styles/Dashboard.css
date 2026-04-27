@@ -1,0 +1,67 @@
+
+.dashboard h2 {
+  margin-bottom: 10px;
+}
+
+.project {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.dashboard {
+  background: #f5f7fb;
+  min-height: 100vh;
+}
+
+.dashboard-container {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+
+.dashboard-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* cards */
+.card {
+  background: white;
+  padding: 16px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+/* input group */
+.input-group {
+  display: flex;
+  gap: 10px;
+}
+
+.input-group input {
+  flex: 1;
+  padding: 8px;
+}
+
+/* project item */
+.project-item {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+.project-name {
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.invite-btn {
+  background: #4f46e5;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
