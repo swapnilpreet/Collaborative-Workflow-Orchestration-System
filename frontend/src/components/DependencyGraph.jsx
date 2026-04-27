@@ -1,32 +1,48 @@
+import ReactFlow from "reactflow";
+import "reactflow/dist/style.css";
+
 export default function DependencyGraph({ tasks }) {
 
-  const renderTask = (task, level = 0) => {
-    return (
-      <div key={task._id} style={{ marginLeft: level * 20 }}>
-        <div style={{
-          padding: "8px 12px",
-          margin: "5px 0",
-          background: "#fff",
-          border: "1px solid #ddd",
-          borderRadius: "6px"
-        }}>
-          <strong>{task.title}</strong> ({task.status})
-        </div>
+  // 🔥 convert tasks → nodes
+  const nodes = tasks.map((task, index) => ({
+    id: task._id,
+    data: {
+  label: (
+    <div style={{
+      padding: "10px",
+      borderRadius: "8px",
+      background: "#f5f7fb",
+      border: "1px solid #ddd"
+    }}>
+      <strong>{task.title}</strong>
+      <br />
+      <small>Status: {task.status}</small>
+    </div>
+  )
+},
+    position: {
+      x: (index % 3) * 250,
+      y: Math.floor(index / 3) * 120
+    }
+  }));
 
-        {tasks
-          .filter(t => t.dependencies.includes(task._id))
-          .map(child => renderTask(child, level + 1))}
-      </div>
-    );
-  };
+  // 🔥 convert dependencies → edges (ARROWS)
+  const edges = [];
 
-  // root tasks (no dependencies)
-  const roots = tasks.filter(t => t.dependencies.length === 0);
+  tasks.forEach(task => {
+    task.dependencies.forEach(depId => {
+      edges.push({
+        id: `${depId}-${task._id}`,
+        source: depId,     // 👉 from dependency
+        target: task._id,  // 👉 to current task
+        animated: true
+      });
+    });
+  });
 
   return (
-    <div>
-      <h3>Dependency Tree</h3>
-      {roots.map(root => renderTask(root))}
+    <div style={{ height: "500px", background: "#fff", borderRadius: "10px" }}>
+      <ReactFlow nodes={nodes} edges={edges} fitView />
     </div>
   );
 }
