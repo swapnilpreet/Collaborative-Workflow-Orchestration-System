@@ -1,10 +1,10 @@
 import { useState } from "react";
-// import api from "../../api/axios";
 import { ProjectContext } from "./ProjectContext";
 import API from "../api/axios";
 
 export const ProjectProvider = ({ children }) => {
   const [projects, setProjects] = useState([]);
+  const [currentProject, setCurrentProject] = useState(null); // ✅ NEW
 
   const fetchProjects = async () => {
     try {
@@ -18,9 +18,7 @@ export const ProjectProvider = ({ children }) => {
   const createProject = async (name) => {
     try {
       const { data } = await API.post("/projects", { name });
-
       setProjects((prev) => [...prev, data]);
-
       return data;
     } catch (err) {
       alert(err.response?.data?.msg || "Failed to create project");
@@ -40,8 +38,11 @@ export const ProjectProvider = ({ children }) => {
     try {
       const { data } = await API.post(`/projects/join`, { token });
 
-      // add joined project to list
-      setProjects((prev) => [...prev, data]);
+      // avoid duplicate project add
+      setProjects((prev) => {
+        const exists = prev.find((p) => p._id === data._id);
+        return exists ? prev : [...prev, data];
+      });
 
       return data;
     } catch (err) {
@@ -49,14 +50,28 @@ export const ProjectProvider = ({ children }) => {
     }
   };
 
+  // ✅ NEW: Get Project By ID
+  const fetchProjectById = async (projectId) => {
+    try {
+      const { data } = await API.get(`/projects/${projectId}`);
+
+      setCurrentProject(data); // store current project
+      return data;
+    } catch (err) {
+      alert(err.response?.data?.msg || "Failed to fetch project");
+    }
+  };
+
   return (
     <ProjectContext.Provider
       value={{
         projects,
+        currentProject,       // ✅ expose
         fetchProjects,
         createProject,
         generateInvite,
         joinProject,
+        fetchProjectById,     // ✅ expose
       }}
     >
       {children}

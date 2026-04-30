@@ -54,7 +54,10 @@ export default function Login() {
       <button onClick={submit} disabled={loading}>
         {loading ? "Logging in..." : "Login"}
       </button>
-      <p onClick={() => navigate("/signup")}>Don't have an account? Signup</p>
+      <p onClick={() => navigate("/signup")}>
+        Don't have an account? 
+        <span style={{cursor:"pointer"}}> Signup</span>
+      </p>
     </div>
   );
 }

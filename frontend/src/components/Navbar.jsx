@@ -1,56 +1,47 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { FcWorkflow } from "react-icons/fc";
+import "../styles/Navbar.css";
 
 export default function Navbar() {
   const { logout, user } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 5);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <div style={{
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      padding: "12px 20px",
-      background: "#111827",
-      color: "#fff"
-    }}>
+    <header className={`navbar ${scrolled ? "scrolled" : ""}`}>
       
-      {/* LEFT */}
-      <h3
-        style={{ cursor: "pointer" }}
-        onClick={() => navigate("/")}
-      >
-        🚀 Workflow App
-      </h3>
+      {/* LOGO */}
+      <div className="logo" onClick={() => navigate("/")}>
+        <FcWorkflow size={26} />
+        <span>Orchest</span>
+      </div>
 
-      {/* RIGHT */}
-      <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
-        
-        {/* USER NAME */}
-        <span>
-          👤 {user?.name || "User"}
-        </span>
+      {/* RIGHT SIDE */}
+      <div className="nav-right">
+        <div className="user">
+          <div className="avatar">
+            {user?.name?.charAt(0).toUpperCase() || "U"}
+          </div>
+          <span>
+            {user?.name
+              ? user.name.charAt(0).toUpperCase() + user.name.slice(1)
+              : "User"}
+          </span>
+        </div>
 
-        <button
-          onClick={handleLogout}
-          style={{
-            background: "#ef4444",
-            border: "none",
-            padding: "6px 12px",
-            borderRadius: "6px",
-            color: "#fff",
-            cursor: "pointer"
-          }}
-        >
+        <button className="logout" onClick={logout}>
           Logout
         </button>
       </div>
-    </div>
+    </header>
   );
 }

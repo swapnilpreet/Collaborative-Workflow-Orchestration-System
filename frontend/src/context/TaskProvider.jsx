@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import { TaskContext } from "./TaskContext";
 import api from "../api/axios";
 import { socket } from "../socket";
- 
+import { toast } from "react-toastify";
+
+
 export const TaskProvider = ({ children }) => {
   const [tasks, setTasks] = useState([]);
 
@@ -25,7 +27,7 @@ export const TaskProvider = ({ children }) => {
         prev.map(t => (t._id === taskId ? data : t))
       );
     } catch (err) {
-      alert(err.response?.data?.msg || "Update failed");
+      toast.error(err.response?.data?.msg || "Update failed");
     }
   };
 
@@ -38,7 +40,7 @@ export const TaskProvider = ({ children }) => {
         prev.map(t => (t._id === taskId ? data : t))
       );
     } catch (err) {
-      alert(err.response?.data?.msg || "Retry failed");
+      toast.error(err.response?.data?.msg || "Retry failed");
     }
   };
 
@@ -49,7 +51,27 @@ export const TaskProvider = ({ children }) => {
 
       setTasks(prev => prev.filter(t => t._id !== taskId));
     } catch (err) {
-      alert(err.response?.data?.msg || "Delete failed");
+      toast.error(err.response?.data?.msg || "Delete failed");
+    }
+  };
+
+  const editTask = async (taskId, updatedData) => {
+    try {
+      const { data } = await api.put(`/tasks/edit/${taskId}`, updatedData);
+
+      if (!data.success) {
+        toast.error(data.msg || "Edit failed");
+        return; 
+      }
+
+      // ✅ only update when success = true
+      setTasks(prev =>
+        prev.map(t => (t._id === taskId ? data.task : t))
+      );
+
+    } catch (err) {
+      // ❌ remove toast here (handled globally)
+      console.log(err.response?.data?.msg);
     }
   };
 
@@ -89,9 +111,10 @@ export const TaskProvider = ({ children }) => {
       value={{
         tasks,
         fetchTasks,
-        updateTask,   // ✅ added
-        retryTask,    // ✅ added
-        deleteTask    // ✅ added
+        updateTask, 
+        retryTask,  
+        deleteTask,
+        editTask
       }}
     >
       {children}

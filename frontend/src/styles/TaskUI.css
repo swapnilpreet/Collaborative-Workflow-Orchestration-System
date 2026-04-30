@@ -121,20 +121,10 @@
 .btn-fail { background: #e74c3c; color: white; }
 .btn-retry { background: #f1c40f; color: black; }
 .btn-delete { background: #2d3436; color: white; }
+.btn-edit { background: #1c46b8; color: rgb(255, 255, 255); }
 
 .task-actions button:hover {
   opacity: 0.85;
-}
-
-/* ===== RESPONSIVE ===== */
-@media (max-width: 768px) {
-  .task-list {
-    grid-template-columns: 1fr;
-  }
-
-  .task-actions button {
-    flex: 100%;
-  }
 }
 
 .task-desc {
@@ -151,9 +141,11 @@
   margin-bottom: 10px;
 }
 
-.task-deps {
-  margin-bottom: 10px;
-  font-size: 13px;
+.resource-tag{
+  background: #fae0e3;
+  color: #640429;
+  padding: 3px 8px;
+  border-radius: 6px;
 }
 
 .dep-badge {
@@ -162,7 +154,7 @@
   padding: 3px 8px;
   border-radius: 6px;
   margin: 3px;
-  font-size: 11px;
+  font-size: 14px;
   color: #38bdf8;
 }
 
@@ -171,8 +163,55 @@
   color: #64748b;
 }
 
-.task-dates {
-  font-size: 11px;
-  color: #64748b;
-  margin-bottom: 10px;
+.edit-form {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.edit-form label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #8693a0;
+}
+
+.edit-form input{
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+
+
+.dependency-box {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dep-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.selected-deps {
+  margin-top: 10px;
+}
+
+.dep-badge {
+  background: #e3f2fd;
+  padding: 4px 8px;
+  margin: 3px;
+  border-radius: 6px;
+  display: inline-block;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .task-list {
+    grid-template-columns: 1fr;
+  }
 }

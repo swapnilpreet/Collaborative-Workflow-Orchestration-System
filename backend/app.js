@@ -13,12 +13,10 @@ app.use(cors({
 
 app.use(express.json());
 
-/* 🔥 ROOT ROUTE (VERY IMPORTANT) */
 app.get("/", (req, res) => {
   res.send("🚀 API is running...");
 });
 
-/* 🔥 HEALTH CHECK ROUTE */
 app.get("/api/health", (req, res) => {
   res.json({
     status: "OK",

@@ -1,21 +1,20 @@
 import axios from "axios";
-
+import {toast} from "react-toastify";
 const API = axios.create({
   baseURL: "https://collaborative-workflow-orchestration-hjr6.onrender.com/api"
+  // baseURL: "http://localhost:5000/api"
 });
 
-// 🔐 attach token
+ 
 API.interceptors.request.use((req) => {
   const token = localStorage.getItem("token");
-
   if (token) {
-    req.headers.Authorization = `Bearer ${token}`; // ✅ FIXED
+    req.headers.Authorization = `Bearer ${token}`;
   }
-
   return req;
 });
 
-// 🔥 GLOBAL ERROR HANDLING (VERY IMPORTANT)
+
 API.interceptors.response.use(
   res => res,
   err => {
@@ -23,8 +22,9 @@ API.interceptors.response.use(
       localStorage.removeItem("token");
       window.location.href = "/login";
     }
-
-    alert(err.response?.data?.msg || "Something went wrong");
+    if (err.response?.data?.msg) {
+      toast.error(err.response.data.msg);
+    }
     return Promise.reject(err);
   }
 );

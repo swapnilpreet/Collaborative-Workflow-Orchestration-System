@@ -27,5 +27,18 @@ exports.login = async (req, res) => {
 };
 
 exports.verifyuser=async(req,res)=>{
-  res.json({ user: req.user });
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+    console.log("verifyuser - User:", user);
+
+    res.json({ user });
+    
+  } catch (error) {
+    console.error("Error in verifyuser:", error);
+    return res.status(500).json({ msg: "Server error" });
+  }
+  // res.json({ user: req.user });
 }

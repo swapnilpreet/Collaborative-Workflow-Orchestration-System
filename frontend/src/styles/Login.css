@@ -11,6 +11,7 @@
 }
 
 .login button {
+  cursor: pointer;
   padding: 10px;
   background: black;
   color: white;

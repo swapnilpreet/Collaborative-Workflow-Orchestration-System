@@ -26,8 +26,14 @@ export default function TaskForm({ projectId }) {
       return false;
     }
 
-    if (!form.priority || form.priority >= 5) {
-      toast.error("Priority must be > 5");
+     if (!form.description.trim()) {
+      toast.error("Description is required");
+      return false;
+    }
+
+
+    if (!form.priority || form.priority < 1 || form.priority > 5) {
+      toast.error("Priority must be between 1 and 5");
       return false;
     }
 

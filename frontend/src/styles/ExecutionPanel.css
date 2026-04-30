@@ -46,12 +46,17 @@
 /* ===== INPUT ===== */
 .execution-input {
   display: flex;
+  flex-direction: column;
   gap: 10px;
-  align-items: center;
+  /* align-items: center; */
 }
 
+.execution-input label {
+  font-size: 14px;
+  color: #555;
+}
 .execution-input input {
-  width: 100px;
+  width: 90%;
   padding: 8px;
   border-radius: 8px;
   border: 1px solid #ddd;

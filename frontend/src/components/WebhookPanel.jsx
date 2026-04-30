@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import api from "../api/axios";
 import "../styles/Webhook.css";
+import { socket } from "../socket";
+import { toast } from "react-toastify";
 
 export default function WebhookPanel({ projectId }) {
   const [url, setUrl] = useState("");
@@ -18,18 +20,31 @@ export default function WebhookPanel({ projectId }) {
 
   useEffect(() => {
     fetchHooks();
+    socket.emit("join_project", projectId);
+
+    socket.on("webhook_triggered", () => {
+      fetchHooks();
+      toast.success("Webhook triggered");
+    });
+
+    return () => {
+      socket.off("webhook_triggered");
+    };
   }, [projectId]);
 
   const addWebhook = async () => {
-    if (!url) return alert("Enter URL");
-
+    if (!url){
+      toast.error("Enter URL");
+       return;
+    }
     try {
       setLoading(true);
       await api.post(`/webhooks/${projectId}`, { url });
       setUrl("");
       fetchHooks();
     } catch (err) {
-      alert(err.response?.data?.msg || "Failed to add webhook");
+      console.error(err?.response?.data?.msg);
+       toast.error("Failed to add webhook");
     } finally {
       setLoading(false);
     }
@@ -57,9 +72,7 @@ export default function WebhookPanel({ projectId }) {
           <div key={h._id} className="webhook-card">
             <p className="webhook-url">{h.url}</p>
 
-            <p className="retry">
-              Retries: {h.retries} / 3
-            </p>
+            <p className="retry">Retries: {h.retries} / 3</p>
 
             {/* DELIVERY LOGS */}
             <div className="logs">
@@ -68,18 +81,21 @@ export default function WebhookPanel({ projectId }) {
               {h.deliveryLogs.length === 0 ? (
                 <p className="no-logs">No logs yet</p>
               ) : (
-                h.deliveryLogs.slice().reverse().map((log, i) => (
-                  <div
-                    key={i}
-                    className={`log ${log.status === "SUCCESS" ? "success" : "fail"}`}
-                  >
-                    <span>{log.status}</span>
-                    <span>{log.response}</span>
-                    <span>
-                      {new Date(log.timestamp).toLocaleTimeString()}
-                    </span>
-                  </div>
-                ))
+                h.deliveryLogs
+                  .slice()
+                  .reverse()
+                  .map((log, i) => (
+                    <div
+                      key={i}
+                      className={`log ${log.status === "SUCCESS" ? "success" : "fail"}`}
+                    >
+                      <span>{log.status}</span>
+                      <span>{log.response}</span>
+                      <span>
+                        {new Date(log.timestamp).toLocaleTimeString()}
+                      </span>
+                    </div>
+                  ))
               )}
             </div>
           </div>
