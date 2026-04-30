@@ -4,7 +4,7 @@ const initSocket = (server) => {
   const socketIO = require("socket.io");
   io = socketIO(server, {
     cors: {
-      origin: "*", //fronend url
+      origin: "https://collaborative-workflow-orchestratio.vercel.app", //fronend url
       methods: ["GET", "POST"]
     }
   });
