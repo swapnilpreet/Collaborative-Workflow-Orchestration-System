@@ -28,6 +28,7 @@ export default function Navbar() {
       {/* RIGHT SIDE */}
       <div className="nav-right">
         <div className="user">
+          <p style={{cursor:"pointer"}} onClick={() => navigate("/audit")}>Auditlogs</p>
           <div className="avatar">
             {user?.name?.charAt(0).toUpperCase() || "U"}
           </div>

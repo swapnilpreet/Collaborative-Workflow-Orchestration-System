@@ -7,6 +7,7 @@ import ProjectPage from "./pages/ProjectPage";
 import PrivateRoute from "./components/PrivateRoute";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import AuditLog from "./pages/AuditLog";
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/audit" element={<AuditLog />} />
         <Route
           path="/"
           element={

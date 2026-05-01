@@ -5,6 +5,9 @@ const initSocket = (server) => {
   io = socketIO(server, {
     cors: {
       origin: "https://collaborative-workflow-orchestratio.vercel.app", //fronend url
+
+      // localrun
+      //  origin: "*", //fronend url
       methods: ["GET", "POST"]
     }
   });
