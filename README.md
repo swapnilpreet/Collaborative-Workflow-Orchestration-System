@@ -27,87 +27,10 @@ backend/
 
 ---
 
-## 🔐 Authentication APIs
-
-### Signup
-POST `/api/auth/signup`
-
-### Login
-POST `/api/auth/login`
-
-### Get Current User
-GET `/api/auth/me` (Protected)
-
----
-
-## 👥 Project APIs
-
-### Create Project
-POST `/api/projects` (Protected)
-
-### Get All Projects
-GET `/api/projects` (Protected)
-
-### Get Project By ID
-GET `/api/projects/:projectId` (Protected)
-
-### Generate Invite Token
-POST `/api/projects/:projectId/invite` (Protected)
-
-### Join Project
-POST `/api/projects/join` (Protected)
-
----
-
-## ✅ Task APIs
-
-### Create Task
-POST `/api/tasks/:projectId` (Protected)
-
-### Get Tasks
-GET `/api/tasks/:projectId` (Protected)
-
-### Update Task
-PUT `/api/tasks/:taskId` (Protected)
-
-### Edit Full Task
-PUT `/api/tasks/edit/:taskId` (Protected)
-
-### Delete Task
-DELETE `/api/tasks/:taskId` (Protected)
-
-### Retry Task
-POST `/api/tasks/retry/:taskId` (Protected)
-
-### Task History
-GET `/api/tasks/history/:taskId` (Protected)
-
----
-
-## ⚡ Execution APIs
-
-### Compute Execution Plan
-POST `/api/execution/:projectId/compute-execution` (Protected)
-
-### Simulate Execution
-POST `/api/execution/:projectId/simulate` (Protected)
-
----
-
-## 🔔 Webhook APIs
-
-### Add Webhook
-POST `/api/webhooks/:projectId` (Protected)
-
-### Get Webhooks
-GET `/api/webhooks/:projectId` (Protected)
-
----
-
 ## 🔐 Authentication
 
 All protected routes require:
-Authorization: Bearer <token>
+Authorisation: Bearer <token>
 
 
 ---
@@ -144,6 +67,7 @@ Authorization: Bearer <token>
 - `status_changed`
 - `retry_attempted`
 - `webhook_triggered`
+- `Audit_logs`
 
 ---
 
